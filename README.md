@@ -1,109 +1,109 @@
-# Ступень 2. Сброс формы и два review
+# Отдельный старт с R2. Сброс формы и два review
 
-Результат: накопительная `specification.md`: личное правило ступени 1 сохранено, новое требование сброса проверили другой аналитик и разработчик или архитектор. Нужны Git, редактор, доступ к PR/MR и два проверяющих. Node.js и OpenSpec не требуются. Код калькулятора не изменяется.
+Этот репозиторий — только самостоятельная поздняя точка входа. Если вы уже прошли R1, оставайтесь в своей текущей папке `sdd-credit-calculator-stage-1-example` и продолжайте по [основной инструкции R2](https://apolenkov.github.io/customdev-learning/guides/stage-2.html): второй clone и импорт не нужны.
 
-Начальная [спецификация](specification.md) общей `main` нужна только для сверки или явного восстановления. Рабочий вход — ваша `specification.md` ступени 1 из конкретного полного SHA. Клонируйте оба учебных репозитория как соседние папки:
+Поздний старт сначала воспроизводит результат R1 из локальной [исходной спецификации](specification.md), затем добавляет R2 в следующей ветке того же checkout. Результат — накопительная `specification.md`, PR между двумя личными ветками и два человеческих review актуального diff. Node.js, OpenSpec и код калькулятора здесь не нужны.
+
+## Подготовьте одну папку
 
 ```bash
 git clone https://github.example.invalid/apolenkov/sdd-credit-calculator-stage-2-example.git
-git clone https://github.com/apolenkov/sdd-guide-credit-calculator-stage-1.git
 cd sdd-credit-calculator-stage-2-example
+git status --short --branch
 ```
 
-Репозиторий приватный: организатор обучения выдаёт доступ на чтение и отправку учебных веток.
+В общем эталоне организатор выдаёт доступ на чтение и отправку личных веток. Не отправляйте решение в `main`, не обходите её защиту и не сливайте учебный PR. Замените `your_login` своим GitHub-логином; для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
 
-## Импортируйте личный договор
+Если дерево уже содержит неожиданные правки или нужное имя ветки занято, остановитесь и уточните папку/имя. Ничего не сбрасывайте и не используйте force push.
 
-В командах замените `your_login` на свой GitHub-логин, а `<полный_SHA_ступени_1>` — на сохранённые 40 символов. Для повторного прохождения добавьте к обоим именам веток суффикс `-2`. Общая `main` остаётся исходным эталоном.
+## Восстановите личный результат R1
 
-1. Из корня ступени 2 убедитесь, что обе папки чисты, а переданный полный SHA существует в локальном репозитории ступени 1:
+1. Зафиксируйте источник baseline и создайте личную R1-ветку:
 
    ```bash
-   git status --short
-   git -C ../sdd-credit-calculator-stage-1-example status --short
-   stage1_sha=<полный_SHA_ступени_1>
-   git -C ../sdd-credit-calculator-stage-1-example rev-parse "$stage1_sha^{commit}"
+   git rev-parse origin/main
+   git show origin/main:specification.md
+   git switch -c course/your_login/stage-1-error-result
    ```
 
-   Обе команды `status` не должны вывести строки, а `rev-parse` должна вывести тот же полный SHA. Иначе остановитесь: не перезаписывайте файлы и не подменяйте источник текущей `main`.
+2. Измените `specification.md` точно в трёх местах:
 
-2. Создайте персональную базу, скопируйте проверенный договор и заполните [происхождение](transfer.md):
+   - в «Требования и сценарии» добавьте правило очистки предыдущего результата до «—» и указания ошибочного поля;
+   - добавьте сценарий `120 000 ₽`, `0%`, `12 месяцев` → `10 000 ₽`, затем `1,5 месяца` → ошибка срока и «—»;
+   - удалите решённый вопрос из «Открытых вопросов» и оставьте «Для данного упражнения открытых вопросов нет».
+
+   Сохраните четыре исходных сценария. Заполните [происхождение позднего старта](transfer.md) фактическими URL, полным SHA `origin/main` и именем личной ветки; не подставляйте запомнённые значения.
+
+3. Проверьте и сохраните R1:
 
    ```bash
-   git switch -c course/your_login/stage-2-import-base
-   git fetch ../sdd-credit-calculator-stage-1-example "$stage1_sha"
-   git rev-parse FETCH_HEAD
-   git restore --source=FETCH_HEAD -- specification.md
-   git show FETCH_HEAD:specification.md | diff - specification.md
    git diff --check
-   git diff -- specification.md
-   sed -n '1,120p' transfer.md
+   git diff -- specification.md transfer.md
    git add specification.md transfer.md
-   git commit -m "docs: import R1 specification from $stage1_sha"
+   git diff --cached --check
+   git diff --cached -- specification.md transfer.md
+   git commit -m "docs: clarify result after invalid input"
+   git status --short
+   git rev-parse HEAD
+   git push -u origin course/your_login/stage-1-error-result
    ```
 
-   `git rev-parse FETCH_HEAD` должна вывести `$stage1_sha`, а `diff` — не вывести строк. В `transfer.md` запишите исходный репозиторий, ветку, полный SHA, путь `specification.md` и пять сохранённых сценариев: четыре исходных плюс «успешный расчёт → ошибочный ввод» ступени 1.
+   Перед R2 снова выполните `git status --short` и `git rev-parse HEAD`; дерево должно быть чистым, а SHA — фактическим последним коммитом R1. Сохраните этот SHA вне Git для PR и следующей ветки.
 
-## Добавьте новое требование
+## Добавьте требование R2
 
-Учебное решение ступени 2: действие «Сбросить» возвращает сумму к `3 000 000 ₽`, ставку к `16%`, срок к `240 месяцам`, очищает все ошибки и показывает результат «—». Сброс не запускает расчёт автоматически.
+Учебное решение: действие «Сбросить» возвращает сумму к `3 000 000 ₽`, ставку к `16%`, срок к `240 месяцам`, очищает ошибки и результат до «—» и не запускает расчёт. Повторный сброс сохраняет это состояние.
 
-1. Создайте ветку нового задания поверх персональной базы:
+1. Создайте R2 от текущего принятого R1:
 
    ```bash
    git switch -c course/your_login/stage-2-reset
    ```
 
-2. Добавьте правило сброса и отдельный сценарий: после любых изменённых значений, показанной ошибки и рассчитанного результата действие «Сбросить» восстанавливает `3 000 000 ₽`, `16%`, `240 месяцев`, очищает ошибки, меняет результат на «—» и не выполняет новый расчёт.
-3. Прочитайте весь документ: четыре исходных сценария и сценарий ошибки ступени 1 должны сохраниться. Проверьте только новую дельту:
+2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. Пять сценариев R1 должны сохраниться; итоговый договор содержит восемь сценариев.
+
+3. Проверьте, сохраните и отправьте R2:
 
    ```bash
    git diff --check
-   git diff course/your_login/stage-2-import-base -- specification.md transfer.md
+   git diff course/your_login/stage-1-error-result -- specification.md transfer.md
    git add specification.md
+   git diff --cached --check
+   git diff --cached -- specification.md
    git commit -m "docs: specify form reset behavior"
-   git diff course/your_login/stage-2-import-base...HEAD -- specification.md transfer.md
+   git push -u origin course/your_login/stage-2-reset
+   git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
    git rev-parse HEAD
    ```
 
-4. Отправьте обе ветки. Откройте PR/MR с base `course/your_login/stage-2-import-base` и head `course/your_login/stage-2-reset`, не с `main`:
+4. Откройте PR с base `course/your_login/stage-1-error-result` и head `course/your_login/stage-2-reset`. Используйте [шаблон описания и вопросов](review/request.md). Общая `main` не является базой учебного PR.
 
-   ```bash
-   git push -u origin course/your_login/stage-2-import-base
-   git push -u origin course/your_login/stage-2-reset
-   ```
+Если точная учебная Jira-задача уже выдана, добавьте в неё ссылку на PR и полный SHA. Не создавайте случайный ключ/родителя и не пишите, что review получено, пока его нет.
 
-   Используйте [описание запроса](review/request.md). Создайте или откройте учебную Task DEMO под DEMO-1 с названием «Провести два review требования сброса кредитного калькулятора» и добавьте ссылку на PR/MR.
+## Получите два человеческих review
 
-## Проведите две проверки
+Сначала другой аналитик проверяет требования и восемь сценариев. После устранения его замечаний разработчик или архитектор проверяет реализуемость правила, сценариев и будущих тестов.
 
-Сначала другой аналитик читает требования и сценарии. После устранения его замечаний разработчик или архитектор проверяет реализуемость и полноту сброса. Для обоих есть [единый список вопросов](review/request.md).
+Каждое замечание примите и исправьте либо аргументированно отклоните в PR. После любого нового коммита оба человека подтверждают актуальный diff повторно. Автоматическая команда и ИИ не являются человеческим одобрением.
 
-Каждое замечание обсуждайте в PR/MR: примите и исправьте либо объясните причину отклонения. Если не хватает решения по поведению, верните вопрос автору задачи. Комментарий ИИ не заменяет одобрение человека.
+После первого полного цикла двух review можно выполнить необязательную [ИИ-предпроверку](ai/request.md) в этой же папке и R2-ветке. Если вы приняли правки ИИ, сделайте коммит, отправьте его в тот же PR и снова получите оба review уже нового diff. Если 2-ИИ пропущена, основной процесс остаётся полным.
 
-После нового коммита оба проверяющих должны подтвердить актуальную версию. Когда обсуждения разрешены и оба подтверждения относятся к текущему diff, закройте учебный PR/MR без слияния в общую `main`. Сохраните ветку и ссылку на проверенный запрос в Jira. Следующему ученику нужен неизменённый эталон; переписывать спецификацию в описание задачи не нужно.
+Когда обсуждения разрешены и два подтверждения относятся к текущему head, сохраните ссылку и полный SHA. В общем эталоне закройте учебный PR без слияния и сохраните обе личные ветки. Если для технического walkthrough отзывы разрешено пропустить, прямо отметьте человеческую приёмку незавершённой.
 
-## ИИ-дополнение
+## Продолжите R3 в этой же папке
 
-До человеческих review выполните [ИИ-предпроверку](ai/request.md) в том же репозитории. Если она выявила ошибку, исправьте документ и снова покажите его людям. Заранее заполненных одобрений в эталоне нет.
+Поздний старт не вводит новый обязательный clone на следующем шаге. Создайте `course/your_login/stage-3-reset-years` от принятой R2 и следуйте [ручной инструкции R3](https://apolenkov.github.io/customdev-learning/guides/stage-3.html): обновите `AGENTS.md`, инициализируйте native OpenSpec для OpenCode и поэтапно перенесите все восемь сценариев в активный Change. В этом checkout нет приложения; Apply и реализация запрещены.
 
-## Проверка результата и следующий шаг
+[3-ИИ](https://apolenkov.github.io/customdev-learning/guides/stage-3-ai.html) создаёт отдельный `add-payment-summary` в `course/your_login/stage-3-ai-payment-summary` и отдельный PR с base `course/your_login/stage-3-reset-years`.
 
-Результат доказан ссылкой на PR/MR, актуальным diff, решениями по замечаниям и двумя настоящими review. `git diff --check` подтверждает лишь оформление diff.
+## Карта семи стабильных страниц
 
-## Как передать в реализацию
+- [R1 — спецификация в Git](https://apolenkov.github.io/customdev-learning/guides/stage-1.html)
+- [1-ИИ — помощь с R1](https://apolenkov.github.io/customdev-learning/guides/stage-1-ai.html)
+- [R2 — сброс, PR и два review](https://apolenkov.github.io/customdev-learning/guides/stage-2.html)
+- [2-ИИ — необязательная предпроверка](https://apolenkov.github.io/customdev-learning/guides/stage-2-ai.html)
+- [R3 — ручной переход в OpenSpec](https://apolenkov.github.io/customdev-learning/guides/stage-3.html)
+- [3-ИИ — отдельный `add-payment-summary`](https://apolenkov.github.io/customdev-learning/guides/stage-3-ai.html)
+- [R4 — изолированный продуктовый Store](https://apolenkov.github.io/customdev-learning/guides/stage-3-star.html)
 
-Эта передача не входит в приёмку аналитической ступени. Источник — `specification.md` из текущего принятого SHA после двух review; рабочая папка кода — отдельный checkout `sdd-credit-calculator-example`.
-
-```bash
-git status --short
-git rev-parse HEAD
-git show HEAD:specification.md
-git show HEAD:transfer.md
-```
-
-Передайте разработчику репозиторий, ветку, полный SHA и пути `specification.md`, `transfer.md`. В сервисе он сначала читает `docs/developer-handoff.md`, сверяет накопительный договор и показывает план. Стартовое сообщение: «Прочитай `docs/developer-handoff.md`, затем `specification.md` и `transfer.md` из переданного SHA. Подтверди пять унаследованных сценариев и новый сценарий сброса, предложи план реализации. Код не меняй и Apply не запускай без отдельного разрешения». Будущие доказательства — diff кода и тестов, успешные проверки сервиса и ручная проверка обоих новых поведений; review ТЗ их не заменяет.
-
-## Следующая ступень
-
-Передайте этот же принятый полный SHA на ступень 3. Там накопительный Markdown-договор переводится в активный OpenSpec Change без Apply. Ветка ступени 2 после передачи остаётся историей и больше не является активным местом правок.
+Каталог курса: <https://apolenkov.github.io/customdev-learning/guides/>.
