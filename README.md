@@ -1,14 +1,14 @@
 # Отдельный старт с R2. Сброс формы и два review
 
-Этот репозиторий — только самостоятельная поздняя точка входа. Если вы уже прошли R1, оставайтесь в своей текущей папке `sdd-credit-calculator-stage-1-example` и продолжайте по [основной инструкции R2](https://apolenkov.github.io/customdev-learning/guides/stage-2.html): второй clone и импорт не нужны.
+Этот репозиторий — только самостоятельная поздняя точка входа. Если вы уже прошли R1, оставайтесь в своей текущей папке `sdd-guide-credit-calculator-stage-1` и продолжайте по [основной инструкции R2](https://apolenkov.github.io/customdev-learning/guides/stage-2.html): второй clone и импорт не нужны.
 
 Поздний старт сначала воспроизводит результат R1 из локальной [исходной спецификации](specification.md), затем добавляет R2 в следующей ветке того же checkout. Результат — накопительная `specification.md`, PR между двумя личными ветками и два человеческих review актуального diff. Node.js, OpenSpec и код калькулятора здесь не нужны.
 
 ## Подготовьте одну папку
 
 ```bash
-git clone https://github.example.invalid/apolenkov/sdd-credit-calculator-stage-2-example.git
-cd sdd-credit-calculator-stage-2-example
+git clone https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2.git
+cd sdd-guide-credit-calculator-stage-2
 git status --short --branch
 ```
 
