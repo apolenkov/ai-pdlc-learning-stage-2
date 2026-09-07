@@ -107,3 +107,38 @@ git status --short --branch
 - [R4 — изолированный продуктовый Store](https://apolenkov.github.io/customdev-learning/guides/stage-3-star.html)
 
 Каталог курса: <https://apolenkov.github.io/customdev-learning/guides/>.
+
+## Отдельная передача R2 в реализацию
+
+Она не заменяет продолжение R3 и не входит в приёмку R2. После двух актуальных человеческих review передайте разработчику фактические URL репозитория, ветку, полный SHA и пути `specification.md`, `transfer.md`:
+
+```bash
+git status --short --branch
+git remote get-url origin
+git branch --show-current
+source_sha=$(git rev-parse HEAD)
+git cat-file -e "$source_sha^{commit}"
+git show "$source_sha:specification.md"
+git show "$source_sha:transfer.md"
+```
+
+Дерево должно быть чистым, оба `show` — выводить принятый договор и provenance позднего старта. В корне отдельного checkout сервиса откройте [общий практикум разработчика](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-3/blob/main/docs/developer-handoff.md) и выполните только начальную read-only проверку:
+
+```bash
+git status --short --branch
+git rev-parse HEAD
+sed -n '1,240p' docs/developer-handoff.md
+```
+
+Сообщение агенту:
+
+```text
+Прочитай docs/developer-handoff.md и AGENTS.md сервиса. Источник требований:
+<URL репозитория>, <ветка>, <полный SHA>, пути specification.md и transfer.md.
+Проверь доступность коммита и покажи оба файла из этого SHA. Сопоставь восемь
+сценариев с текущим baseline, перечисли пробелы и предложи план с проверками.
+Пока не меняй файлы или код, не создавай Change, не запускай Apply и не
+называй read-only проверку реализацией новых функций.
+```
+
+Если SHA недоступен, дерево грязное или файлы не совпадают с передачей, остановитесь. Переход к Change, Apply и коду требует отдельного разрешения.
