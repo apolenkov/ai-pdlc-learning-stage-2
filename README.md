@@ -9,16 +9,18 @@
 ```bash
 git clone https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2.git
 cd sdd-guide-credit-calculator-stage-2
+fork_url="<CORPORATE_FORK_URL>"
+git remote get-url fork || git remote add fork "$fork_url"
 git status --short --branch
 ```
 
-В общем эталоне организатор выдаёт доступ на чтение и отправку личных веток. Не отправляйте решение в `main`, не обходите её защиту и не сливайте учебный PR. Замените `your_login` своим GitHub-логином; для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
+В общем эталоне работа идёт через корпоративный fork: один раз создайте fork, добавьте remote `fork` и отправляйте личные ветки туда. Не отправляйте решение в `main` и не обходите её защиту; после двух review учебный PR можно смёржить в личную base-ветку внутри своего fork, в общую `main` не сливайте. Замените `your_login` своим GitHub-логином; для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
 
 Если дерево уже содержит неожиданные правки или нужное имя ветки занято, остановитесь и уточните папку/имя. Ничего не сбрасывайте и не используйте force push.
 
 ## Восстановите личный результат R1
 
-1. Зафиксируйте источник baseline и создайте личную R1-ветку:
+1. Зафиксируйте источник исходного состояния и создайте личную R1-ветку:
 
    ```bash
    git rev-parse origin/main
@@ -45,7 +47,9 @@ git status --short --branch
    git commit -m "docs: clarify result after invalid input"
    git status --short
    git rev-parse HEAD
-   git push -u origin course/your_login/stage-1-error-result
+   push_remote=fork
+git push -u "$push_remote" course/your_login/stage-1-error-result
+git ls-remote --heads "$push_remote" course/your_login/stage-1-error-result
    ```
 
    Перед R2 снова выполните `git status --short` и `git rev-parse HEAD`; дерево должно быть чистым, а SHA — фактическим последним коммитом R1. Сохраните этот SHA вне Git для PR и следующей ветки.
@@ -71,7 +75,9 @@ git status --short --branch
    git diff --cached --check
    git diff --cached -- specification.md
    git commit -m "docs: specify form reset behavior"
-   git push -u origin course/your_login/stage-2-reset
+   push_remote=fork
+git push -u "$push_remote" course/your_login/stage-2-reset
+git ls-remote --heads "$push_remote" course/your_login/stage-2-reset
    git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
    git rev-parse HEAD
    ```
@@ -88,7 +94,7 @@ git status --short --branch
 
 После первого полного цикла двух review можно выполнить необязательную [ИИ-предпроверку](ai/request.md) в этой же папке и R2-ветке. Если вы приняли правки ИИ, сделайте коммит, отправьте его в тот же PR и снова получите оба review уже нового diff. Если 2-ИИ пропущена, основной процесс остаётся полным.
 
-Когда обсуждения разрешены и два подтверждения относятся к текущему head, сохраните ссылку и полный SHA. В общем эталоне закройте учебный PR без слияния и сохраните обе личные ветки. Если для технического walkthrough отзывы разрешено пропустить, прямо отметьте человеческую приёмку незавершённой.
+Когда обсуждения разрешены и два подтверждения относятся к текущему head, сохраните ссылку и полный SHA. В общем эталоне PR живёт внутри вашего корпоративного fork: после двух review смёржьте его в личную base-ветку fork и сохраните обе личные ветки; в общую `main` не сливайте. Если для технического walkthrough отзывы разрешено пропустить, прямо отметьте человеческую приёмку незавершённой.
 
 ## Продолжите R3 в этой же папке
 
@@ -114,7 +120,7 @@ git status --short --branch
 
 ```bash
 git status --short --branch
-git remote get-url origin
+git remote get-url fork
 git branch --show-current
 source_sha=$(git rev-parse HEAD)
 git cat-file -e "$source_sha^{commit}"
@@ -136,7 +142,7 @@ sed -n '1,240p' docs/developer-handoff.md
 Прочитай docs/developer-handoff.md и AGENTS.md сервиса. Источник требований:
 <URL репозитория>, <ветка>, <полный SHA>, пути specification.md и transfer.md.
 Проверь доступность коммита и покажи оба файла из этого SHA. Сопоставь восемь
-сценариев с текущим baseline, перечисли пробелы и предложи план с проверками.
+сценариев с текущим состоянием, перечисли пробелы и предложи план с проверками.
 Пока не меняй файлы или код, не создавай Change, не запускай Apply и не
 называй read-only проверку реализацией новых функций.
 ```
