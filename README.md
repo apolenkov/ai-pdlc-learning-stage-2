@@ -48,8 +48,8 @@ git status --short --branch
    git status --short
    git rev-parse HEAD
    push_remote=fork
-git push -u "$push_remote" course/your_login/stage-1-error-result
-git ls-remote --heads "$push_remote" course/your_login/stage-1-error-result
+   git push -u "$push_remote" course/your_login/stage-1-error-result
+   git ls-remote --heads "$push_remote" course/your_login/stage-1-error-result
    ```
 
    Перед R2 снова выполните `git status --short` и `git rev-parse HEAD`; дерево должно быть чистым, а SHA — фактическим последним коммитом R1. Сохраните этот SHA вне Git для PR и следующей ветки.
@@ -76,8 +76,8 @@ git ls-remote --heads "$push_remote" course/your_login/stage-1-error-result
    git diff --cached -- specification.md
    git commit -m "docs: specify form reset behavior"
    push_remote=fork
-git push -u "$push_remote" course/your_login/stage-2-reset
-git ls-remote --heads "$push_remote" course/your_login/stage-2-reset
+   git push -u "$push_remote" course/your_login/stage-2-reset
+   git ls-remote --heads "$push_remote" course/your_login/stage-2-reset
    git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
    git rev-parse HEAD
    ```
