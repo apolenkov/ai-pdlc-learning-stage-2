@@ -4,17 +4,18 @@
 
 Поздний старт сначала воспроизводит результат R1 из локальной [исходной спецификации](specification.md), затем добавляет R2 в следующей ветке того же checkout. Результат — накопительная `specification.md`, PR между двумя личными ветками и два человеческих review актуального diff. Node.js, OpenSpec и код калькулятора здесь не нужны.
 
-## Подготовьте одну папку
+## Подготовьте fork и одну папку
+
+Откройте [общий учебный эталон](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2), нажмите **Fork** и дождитесь создания своего fork. Затем клонируйте именно его, заменив `your_login` своим GitHub-логином:
 
 ```bash
-git clone https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2.git
+git clone https://github.example.invalid/your_login/sdd-guide-credit-calculator-stage-2.git
 cd sdd-guide-credit-calculator-stage-2
-fork_url="<CORPORATE_FORK_URL>"
-git remote get-url fork || git remote add fork "$fork_url"
+git remote get-url origin
 git status --short --branch
 ```
 
-В общем эталоне работа идёт через корпоративный fork: один раз создайте fork, добавьте remote `fork` и отправляйте личные ветки туда. Не отправляйте решение в `main` и не обходите её защиту; после двух review учебный PR можно смёржить в личную base-ветку внутри своего fork, в общую `main` не сливайте. Замените `your_login` своим GitHub-логином; для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
+В этом checkout `origin` — ваш fork: отправляйте личные ветки туда обычной командой `git push`. Второй remote для учебного маршрута не нужен. Не отправляйте решение в `main` и не обходите её защиту; после двух review учебный PR можно смёржить в личную base-ветку внутри своего fork, в общую `main` не сливайте. Для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
 
 Если дерево уже содержит неожиданные правки или нужное имя ветки занято, остановитесь и уточните папку/имя. Ничего не сбрасывайте и не используйте force push.
 
@@ -47,16 +48,15 @@ git status --short --branch
    git commit -m "docs: clarify result after invalid input"
    git status --short
    git rev-parse HEAD
-   push_remote=fork
-   git push -u "$push_remote" course/your_login/stage-1-error-result
-   git ls-remote --heads "$push_remote" course/your_login/stage-1-error-result
+   git push -u origin course/your_login/stage-1-error-result
+   git ls-remote --heads origin course/your_login/stage-1-error-result
    ```
 
    Перед R2 снова выполните `git status --short` и `git rev-parse HEAD`; дерево должно быть чистым, а SHA — фактическим последним коммитом R1. Сохраните этот SHA вне Git для PR и следующей ветки.
 
 ## Добавьте требование R2
 
-Учебное решение: действие «Сбросить» возвращает сумму к `3 000 000 ₽`, ставку к `16%`, срок к `240 месяцам`, очищает ошибки и результат до «—» и не запускает расчёт. Повторный сброс сохраняет это состояние.
+Учебное решение: действие «Сбросить» возвращает сумму к `3 000 000 ₽`, ставку к `16%`, срок к `240 месяцам`, очищает ошибки и результат до «—» и не запускает расчёт. Повторный сброс не меняет состояние, не запускает расчёт и не показывает ошибку.
 
 1. Создайте R2 от текущего принятого R1:
 
@@ -64,7 +64,7 @@ git status --short --branch
    git switch -c course/your_login/stage-2-reset
    ```
 
-2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. Пять сценариев R1 должны сохраниться; итоговый договор содержит восемь сценариев.
+2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. В последнем сценарии явно укажите: состояние не меняется, расчёт не запускается, ошибка не показывается. Пять сценариев R1 должны сохраниться; итоговый договор содержит восемь сценариев.
 
 3. Проверьте, сохраните и отправьте R2:
 
@@ -75,9 +75,8 @@ git status --short --branch
    git diff --cached --check
    git diff --cached -- specification.md
    git commit -m "docs: specify form reset behavior"
-   push_remote=fork
-   git push -u "$push_remote" course/your_login/stage-2-reset
-   git ls-remote --heads "$push_remote" course/your_login/stage-2-reset
+   git push -u origin course/your_login/stage-2-reset
+   git ls-remote --heads origin course/your_login/stage-2-reset
    git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
    git rev-parse HEAD
    ```
@@ -120,7 +119,7 @@ git status --short --branch
 
 ```bash
 git status --short --branch
-git remote get-url fork
+git remote get-url origin
 git branch --show-current
 source_sha=$(git rev-parse HEAD)
 git cat-file -e "$source_sha^{commit}"
