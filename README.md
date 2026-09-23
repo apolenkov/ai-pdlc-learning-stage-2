@@ -58,7 +58,7 @@
 
 ## Продолжите R3 в этой же папке
 
-Поздний старт не вводит новый обязательный clone на следующем шаге. Создайте `course/your_login/stage-3-reset-years` от принятого head ветки `course/your_login/stage-2-reset` — тем же действием **Create new branch** в строке состояния — и следуйте [ручной инструкции R3](https://apolenkov.github.io/customdev-learning/guides/stage-3.html): обновите `AGENTS.md`, инициализируйте native OpenSpec для OpenCode и поэтапно перенесите все восемь сценариев в активный Change. В этом checkout нет приложения; Apply и реализация запрещены.
+Поздний старт не вводит новый обязательный clone на следующем шаге. Создайте `course/your_login/stage-3-reset-years` от принятого head ветки `course/your_login/stage-2-reset` — тем же действием **Create new branch** в строке состояния — и следуйте [ручной инструкции R3](https://apolenkov.github.io/customdev-learning/guides/stage-3.html): обновите `AGENTS.md`, инициализируйте native OpenSpec для VS Code + Kilo и поэтапно перенесите все восемь сценариев в активный Change. В этом checkout нет приложения; Apply и реализация запрещены.
 
 [3-ИИ](https://apolenkov.github.io/customdev-learning/guides/stage-3-ai.html) создаёт отдельный `add-payment-summary` в `course/your_login/stage-3-ai-payment-summary` и отдельный PR с base `course/your_login/stage-3-reset-years`.
 
