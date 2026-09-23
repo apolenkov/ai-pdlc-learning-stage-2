@@ -4,30 +4,21 @@
 
 Поздний старт сначала воспроизводит результат R1 из локальной [исходной спецификации](specification.md), затем добавляет R2 в следующей ветке того же checkout. Результат — накопительная `specification.md`, PR между двумя личными ветками и два человеческих review актуального diff. Node.js, OpenSpec и код калькулятора здесь не нужны.
 
+Основной маршрут выполняется в браузере и VS Code. Точные команды терминала для сверки и восстановления собраны в одном блоке [«Через терминал»](#через-терминал--точные-команды-и-восстановление) — не выполняйте оба варианта подряд.
+
 ## Подготовьте fork и одну папку
 
-Откройте [общий учебный эталон](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2), нажмите **Fork** и дождитесь создания своего fork. Затем клонируйте именно его, заменив `your_login` своим GitHub-логином:
+Откройте [общий учебный эталон](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2) в браузере, нажмите **Fork** и дождитесь создания своего fork. Откройте свой fork и скопируйте его HTTPS-адрес.
 
-```bash
-git clone https://github.example.invalid/your_login/sdd-guide-credit-calculator-stage-2.git
-cd sdd-guide-credit-calculator-stage-2
-git remote get-url origin
-git status --short --branch
-```
+В VS Code вызовите **Git: Clone Repository** (палитра команд или кнопка на стартовом экране), вставьте скопированный HTTPS-адрес своего fork и выберите папку учебных проектов. Откройте клонированную папку: она останется рабочей на ступенях R1–R3, новый clone на следующих ступенях не нужен.
 
-В этом checkout `origin` — ваш fork: отправляйте личные ветки туда обычной командой `git push`. Второй remote для учебного маршрута не нужен. Не отправляйте решение в `main` и не обходите её защиту; после двух review учебный PR можно смёржить в личную base-ветку внутри своего fork, в общую `main` не сливайте. Для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
+В этом checkout `origin` — ваш fork: личные ветки отправляются туда кнопкой **Publish Branch** (или **Push**) в VS Code. Второй remote для учебного маршрута не нужен. Не отправляйте решение в `main` и не обходите её защиту; после двух review учебный PR можно смёржить в личную base-ветку внутри своего fork, в общую `main` не сливайте. Для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
 
 Если дерево уже содержит неожиданные правки или нужное имя ветки занято, остановитесь и уточните папку/имя. Ничего не сбрасывайте и не используйте force push.
 
 ## Восстановите личный результат R1
 
-1. Зафиксируйте источник исходного состояния и создайте личную R1-ветку:
-
-   ```bash
-   git rev-parse origin/main
-   git show origin/main:specification.md
-   git switch -c course/your_login/stage-1-error-result
-   ```
+1. Создайте личную ветку в VS Code: нажмите имя текущей ветки в строке состояния слева внизу → **Create new branch** → введите `course/your_login/stage-1-error-result`, заменив `your_login` своим GitHub-логином. Ветка создаётся от `main` этого эталона — исходного baseline позднего старта.
 
 2. Измените `specification.md` точно в трёх местах:
 
@@ -35,55 +26,25 @@ git status --short --branch
    - добавьте сценарий `120 000 ₽`, `0%`, `12 месяцев` → `10 000 ₽`, затем `1,5 месяца` → ошибка срока и «—»;
    - удалите решённый вопрос из «Открытых вопросов» и оставьте «Для данного упражнения открытых вопросов нет».
 
-   Сохраните четыре исходных сценария. Заполните [происхождение позднего старта](transfer.md) фактическими URL, полным SHA `origin/main` и именем личной ветки; не подставляйте запомнённые значения.
+   Сохраните четыре исходных сценария. Заполните [происхождение позднего старта](transfer.md) фактическим URL, полным SHA `origin/main` и именем личной ветки; не подставляйте запомнённые значения. Полный SHA baseline здесь нужен для происхождения — точная команда есть в блоке [«Через терминал»](#через-терминал--точные-команды-и-восстановление).
 
-3. Проверьте и сохраните R1:
+3. Сохраните и отправьте R1 в VS Code: в **Source Control** (значок ветки на левой панели) прочитайте весь diff `specification.md` и `transfer.md` — двойной щелчок по файлу открывает сравнение. Добавьте оба файла в staged кнопкой **+** у файла, ещё раз прочитайте staged diff, введите сообщение `docs: clarify result after invalid input` и нажмите **Commit**. Затем отправьте ветку кнопкой **Publish Branch** в `origin` и проверьте её появление в своём fork в браузере.
 
-   ```bash
-   git diff --check
-   git diff -- specification.md transfer.md
-   git add specification.md transfer.md
-   git diff --cached --check
-   git diff --cached -- specification.md transfer.md
-   git commit -m "docs: clarify result after invalid input"
-   git status --short
-   git rev-parse HEAD
-   git push -u origin course/your_login/stage-1-error-result
-   git ls-remote --heads origin course/your_login/stage-1-error-result
-   ```
-
-   Перед R2 снова выполните `git status --short` и `git rev-parse HEAD`; дерево должно быть чистым, а SHA — фактическим последним коммитом R1. Сохраните этот SHA вне Git для PR и следующей ветки.
+   Перед R2 убедитесь, что в строке состояния выбрана ваша ветка `course/your_login/stage-1-error-result`, а список изменений в Source Control пуст. Полный SHA R1 получите из блока «Через терминал», только если он нужен для передачи или записи происхождения.
 
 ## Добавьте требование R2
 
 Учебное решение: действие «Сбросить» возвращает сумму к `3 000 000 ₽`, ставку к `16%`, срок к `240 месяцам`, очищает ошибки и результат до «—» и не запускает расчёт. Повторный сброс не меняет состояние, не запускает расчёт и не показывает ошибку.
 
-1. Создайте R2 от текущего принятого R1:
-
-   ```bash
-   git switch -c course/your_login/stage-2-reset
-   ```
+1. Создайте ветку R2 от текущего принятого R1: нажмите имя ветки в строке состояния → **Create new branch** → введите `course/your_login/stage-2-reset`. Новая ветка создаётся от вашего принятого коммита R1, а не от `main`.
 
 2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. В последнем сценарии явно укажите: состояние не меняется, расчёт не запускается, ошибка не показывается. Пять сценариев R1 должны сохраниться; итоговый договор содержит восемь сценариев.
 
-3. Проверьте, сохраните и отправьте R2:
+3. Проверьте и отправьте R2: в **Source Control** прочитайте весь diff `specification.md`, добавьте в staged только `specification.md` кнопкой **+**, ещё раз прочитайте staged diff, введите сообщение `docs: specify form reset behavior` и нажмите **Commit**. Отправьте ветку кнопкой **Publish Branch** в `origin` и проверьте её в своём fork в браузере.
 
-   ```bash
-   git diff --check
-   git diff course/your_login/stage-1-error-result -- specification.md transfer.md
-   git add specification.md
-   git diff --cached --check
-   git diff --cached -- specification.md
-   git commit -m "docs: specify form reset behavior"
-   git push -u origin course/your_login/stage-2-reset
-   git ls-remote --heads origin course/your_login/stage-2-reset
-   git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
-   git rev-parse HEAD
-   ```
+4. На странице своего fork откройте PR: base — `course/your_login/stage-1-error-result`, head — `course/your_login/stage-2-reset`. Обе личные ветки лежат в одном корпоративном fork, поэтому PR создаётся внутри fork; общая `main` не является базой учебного PR. Используйте [шаблон описания и вопросов](review/request.md).
 
-4. Откройте PR с base `course/your_login/stage-1-error-result` и head `course/your_login/stage-2-reset`. Используйте [шаблон описания и вопросов](review/request.md). Общая `main` не является базой учебного PR.
-
-Если точная учебная Jira-задача уже выдана, добавьте в неё ссылку на PR и полный SHA. Не создавайте случайный ключ/родителя и не пишите, что review получено, пока его нет.
+Учебную задачу Jira ведите по [канонической инструкции R2](https://apolenkov.github.io/customdev-learning/guides/stage-2.html): откройте выданную лично вам Task проекта DEMO, а если её нет — создайте свою по той же инструкции и [порядку доступа к DEMO](https://apolenkov.github.io/customdev-learning/corporate-resources.html#jira). Добавьте в задачу ссылку на PR; полный SHA ветки укажите, только если он запрошен. Не создавайте случайный ключ/родителя и не пишите, что review получено, пока его нет.
 
 ## Получите два человеческих review
 
@@ -93,13 +54,90 @@ git status --short --branch
 
 После первого полного цикла двух review можно выполнить необязательную [ИИ-предпроверку](ai/request.md) в этой же папке и R2-ветке. Если вы приняли правки ИИ, сделайте коммит, отправьте его в тот же PR и снова получите оба review уже нового diff. Если 2-ИИ пропущена, основной процесс остаётся полным.
 
-Когда обсуждения разрешены и два подтверждения относятся к текущему head, сохраните ссылку и полный SHA. В общем эталоне PR живёт внутри вашего корпоративного fork: после двух review смёржьте его в личную base-ветку fork и сохраните обе личные ветки; в общую `main` не сливайте. Если для технического walkthrough отзывы разрешено пропустить, прямо отметьте человеческую приёмку незавершённой.
+Когда обсуждения разрешены и два подтверждения относятся к текущему head, сохраните ссылку на PR; точный SHA head зафиксируйте только для передачи или по требованию приёмки. В общем эталоне PR живёт внутри вашего корпоративного fork: после двух review смёржьте его в личную base-ветку fork и сохраните обе личные ветки; в общую `main` не сливайте. Если для технического walkthrough отзывы разрешено пропустить, прямо отметьте человеческую приёмку незавершённой.
 
 ## Продолжите R3 в этой же папке
 
-Поздний старт не вводит новый обязательный clone на следующем шаге. Создайте `course/your_login/stage-3-reset-years` от принятой R2 и следуйте [ручной инструкции R3](https://apolenkov.github.io/customdev-learning/guides/stage-3.html): обновите `AGENTS.md`, инициализируйте native OpenSpec для OpenCode и поэтапно перенесите все восемь сценариев в активный Change. В этом checkout нет приложения; Apply и реализация запрещены.
+Поздний старт не вводит новый обязательный clone на следующем шаге. Создайте `course/your_login/stage-3-reset-years` от принятого head ветки `course/your_login/stage-2-reset` — тем же действием **Create new branch** в строке состояния — и следуйте [ручной инструкции R3](https://apolenkov.github.io/customdev-learning/guides/stage-3.html): обновите `AGENTS.md`, инициализируйте native OpenSpec для OpenCode и поэтапно перенесите все восемь сценариев в активный Change. В этом checkout нет приложения; Apply и реализация запрещены.
 
 [3-ИИ](https://apolenkov.github.io/customdev-learning/guides/stage-3-ai.html) создаёт отдельный `add-payment-summary` в `course/your_login/stage-3-ai-payment-summary` и отдельный PR с base `course/your_login/stage-3-reset-years`.
+
+## Через терминал · точные команды и восстановление
+
+Основной маршрут выше выполняется в браузере и VS Code. Команды ниже — для сверки состояния, восстановления и тех, кто сознательно работает в терминале.
+
+<details><summary>Развернуть точные команды</summary>
+
+Клонирование fork и проверка `origin`:
+
+```bash
+git clone https://github.example.invalid/your_login/sdd-guide-credit-calculator-stage-2.git
+cd sdd-guide-credit-calculator-stage-2
+git remote get-url origin
+git status --short --branch
+```
+
+Baseline и личная ветка R1 (полный SHA `origin/main` — для `transfer.md`):
+
+```bash
+git rev-parse origin/main
+git show origin/main:specification.md
+git switch -c course/your_login/stage-1-error-result
+```
+
+Проверка, коммит и отправка R1:
+
+```bash
+git diff --check
+git diff -- specification.md transfer.md
+git add specification.md transfer.md
+git diff --cached --check
+git diff --cached -- specification.md transfer.md
+git commit -m "docs: clarify result after invalid input"
+git status --short
+git push -u origin course/your_login/stage-1-error-result
+git ls-remote --heads origin course/your_login/stage-1-error-result
+```
+
+Ветка R2, проверка, коммит и отправка:
+
+```bash
+git switch -c course/your_login/stage-2-reset
+git diff --check
+git diff course/your_login/stage-1-error-result -- specification.md transfer.md
+git add specification.md
+git diff --cached --check
+git diff --cached -- specification.md
+git commit -m "docs: specify form reset behavior"
+git push -u origin course/your_login/stage-2-reset
+git ls-remote --heads origin course/your_login/stage-2-reset
+git diff course/your_login/stage-1-error-result...HEAD -- specification.md transfer.md
+```
+
+Состояние и полный SHA по запросу (передача, происхождение, точный след в Jira):
+
+```bash
+git status --short --branch
+git branch --show-current
+git rev-parse HEAD
+```
+
+Восстановление: сверьте локальный R1 с опубликованным в fork — оба значения `rev-parse` должны совпасть, при расхождении остановитесь. Ветку R2 создавайте от опубликованного R1; не подставляйте `main` и не применяйте force:
+
+```bash
+git status --short --branch
+git fetch origin
+git rev-parse HEAD origin/course/your_login/stage-1-error-result
+git switch -c course/your_login/stage-2-reset origin/course/your_login/stage-1-error-result
+```
+
+Ветка R3 от принятого head R2:
+
+```bash
+git switch -c course/your_login/stage-3-reset-years course/your_login/stage-2-reset
+```
+
+</details>
 
 ## Карта семи стабильных страниц
 
@@ -109,7 +147,7 @@ git status --short --branch
 - [2-ИИ — необязательная предпроверка](https://apolenkov.github.io/customdev-learning/guides/stage-2-ai.html)
 - [R3 — ручной переход в OpenSpec](https://apolenkov.github.io/customdev-learning/guides/stage-3.html)
 - [3-ИИ — отдельный `add-payment-summary`](https://apolenkov.github.io/customdev-learning/guides/stage-3-ai.html)
-- [R4 — изолированный продуктовый Store](https://apolenkov.github.io/customdev-learning/guides/stage-3-star.html)
+- [R4 — изолированный продуктовый Store](https://apolenkov.github.io/customdev-learning/guides/stage-4.html)
 
 Каталог курса: <https://apolenkov.github.io/customdev-learning/guides/>.
 
