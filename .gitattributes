@@ -1,0 +1,5 @@
+# Kilo integration is OpenSpec generator output (planning-only subset): rewritten
+# by `openspec update`, cannot be hand-split. Exempt it from the global
+# agent-size-guard, whose 20 000-byte limit targets authored files.
+.kilocode/skills/openspec-*/** linguist-generated
+.kilo/command/** linguist-generated
