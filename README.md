@@ -4,14 +4,14 @@
 
 | | |
 | --- | --- |
-| Шаг курса | [Шаг 2. Проверяем и согласуем](https://apolenkov.github.io/customdev-learning/guides/s2-review.html) |
-| Вход | Два варианта. (а) Вы прошли шаг 1 в fork `sdd-guide-credit-calculator-stage-1`: этот репозиторий не нужен, продолжайте в своей папке по странице шага 2. (б) Поздний старт: вы здесь, результат шага 1 сначала восстанавливается |
+| Шаг курса | [Шаг 2. Проверяем и согласуем](https://apolenkov.github.io/ai-pdlc-learning/guides/s2-review.html) |
+| Вход | Два варианта. (а) Вы прошли шаг 1 в fork `ai-pdlc-learning-stage-1`: этот репозиторий не нужен, продолжайте в своей папке по странице шага 2. (б) Поздний старт: вы здесь, результат шага 1 сначала восстанавливается |
 | Действие | Описать в личной ветке требование сброса формы и открыть запрос на review (PR, в GitLab — MR) к ветке шага 1 |
 | Результат | PR между двумя личными ветками, одобренный владельцем продукта; в `specification.md` восемь сценариев |
 
 **С чего начать.** На GitHub нажмите **Fork**. Если вы работаете в GitLab, создайте проект через
 **New project → Import project → Repository by URL** и вставьте адрес
-`https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2.git`.
+`https://github.com/apolenkov/ai-pdlc-learning-stage-2.git`.
 
 ## Подготовьте fork и одну папку
 
@@ -21,9 +21,9 @@ Git нужен не ради ещё одной папки: он сохраняе
 
 Основной маршрут выполняется в браузере и VS Code; рядом с каждым действием в интерфейсе стоит его команда терминала. Точные команды для сверки и восстановления собраны в блоке [«Через терминал»](#через-терминал--точные-команды-и-восстановление) — не выполняйте оба варианта подряд.
 
-Откройте [общий учебный эталон](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-2) в браузере, нажмите **Fork** и дождитесь создания своего fork. Откройте свой fork (в GitLab — проект, созданный импортом) и скопируйте его HTTPS-адрес.
+Откройте [общий учебный эталон](https://github.com/apolenkov/ai-pdlc-learning-stage-2) в браузере, нажмите **Fork** и дождитесь создания своего fork. Откройте свой fork (в GitLab — проект, созданный импортом) и скопируйте его HTTPS-адрес.
 
-В VS Code вызовите **Git: Clone Repository** (палитра команд или кнопка на стартовом экране), вставьте скопированный HTTPS-адрес своего fork и выберите папку учебных проектов. Откройте клонированную папку: она останется рабочей на шагах 1–3, новый clone на следующих шагах не нужен. В терминале: `git clone https://github.com/your_login/sdd-guide-credit-calculator-stage-2.git` — вместо `your_login` подставьте свой логин; в GitLab возьмите адрес проекта, созданного импортом.
+В VS Code вызовите **Git: Clone Repository** (палитра команд или кнопка на стартовом экране), вставьте скопированный HTTPS-адрес своего fork и выберите папку учебных проектов. Откройте клонированную папку: она останется рабочей на шагах 1–3, новый clone на следующих шагах не нужен. В терминале: `git clone https://github.com/your_login/ai-pdlc-learning-stage-2.git` — вместо `your_login` подставьте свой логин; в GitLab возьмите адрес проекта, созданного импортом.
 
 В этом checkout `origin` — ваш fork: личные ветки отправляются туда кнопкой **Publish Branch** (или **Push**) в VS Code. Второй remote для учебного маршрута не нужен. Не отправляйте решение в `main` и не обходите её защиту. Одобрение по текущему diff даёт владелец продукта: он нажимает Approve. Аналитик и техлид оставляют замечания в PR. Архитектора приглашают через @, если изменение затрагивает данные, интеграции, безопасность или производительность, либо при споре: он пишет замечания (и `design.md`), но одобряет по-прежнему владелец продукта. После одобрения учебный PR можно смёржить только в личную base-ветку внутри своего fork. Для повторного прохождения добавьте одинаковый суффикс ко всем личным веткам.
 
@@ -51,13 +51,13 @@ Git нужен не ради ещё одной папки: он сохраняе
 
 1. Создайте ветку шага 2 от текущего принятого шага 1: нажмите имя ветки в строке состояния → **Create new branch** → введите `course/your_login/stage-2-reset`. Новая ветка создаётся от вашего принятого коммита шага 1, а не от `main`. В терминале: `git switch -c course/your_login/stage-2-reset`
 
-2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. В последнем сценарии явно укажите: состояние не меняется, расчёт не запускается, ошибка не показывается. Пять сценариев шага 1 должны сохраниться; итоговый договор содержит восемь сценариев. Когда сформулируете свой вариант, сверьтесь с [разобранным решением шага 2](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-1/compare/course/example/stage-1-error-result...course/example/stage-2-reset): откройте в сравнении файл `specification.md` и найдите правило сброса и три новых сценария. Это один способ разбора, а не образец для копирования.
+2. Добавьте правило и три сценария: сброс после успешного расчёта, сброс после ошибки и повторный сброс. В последнем сценарии явно укажите: состояние не меняется, расчёт не запускается, ошибка не показывается. Пять сценариев шага 1 должны сохраниться; итоговый договор содержит восемь сценариев. Когда сформулируете свой вариант, сверьтесь с [разобранным решением шага 2](https://github.com/apolenkov/ai-pdlc-learning-stage-1/compare/course/example/stage-1-error-result...course/example/stage-2-reset): откройте в сравнении файл `specification.md` и найдите правило сброса и три новых сценария. Это один способ разбора, а не образец для копирования.
 
 3. Проверьте и отправьте шаг 2: в **Source Control** прочитайте весь diff `specification.md`. В терминале: `git diff course/your_login/stage-1-error-result -- specification.md transfer.md`. Добавьте в staged только `specification.md` кнопкой **+**. В терминале: `git add specification.md`. Ещё раз прочитайте staged diff (`git diff --cached -- specification.md`), введите сообщение `docs: specify form reset behavior` и нажмите **Commit**. В терминале: `git commit -m "docs: specify form reset behavior"`. Отправьте ветку кнопкой **Publish Branch** в `origin`. В терминале: `git push -u origin course/your_login/stage-2-reset`. Проверьте ветку в своём fork в браузере; в терминале: `git ls-remote --heads origin course/your_login/stage-2-reset`
 
 4. На странице своего fork откройте PR (в GitLab — MR): source — `course/your_login/stage-2-reset`, target — `course/your_login/stage-1-error-result` в том же fork. Обе личные ветки лежат в одном fork, поэтому PR создаётся внутри fork; общая `main` не является target учебного PR. Если платформа предлагает target в исходном репозитории курса, смените его на свой fork. На GitHub форма описания подставляется в PR автоматически из `.github/pull_request_template.md`. В GitLab шаблона нет: скопируйте текст из `.github/pull_request_template.md` в описание MR. Полные вопросы ревьюерам — в [review/request.md](review/request.md).
 
-Учебная задача — issue в своём fork; если курс проходят в компании, это задача в трекере команды. Порядок ведения — на [странице шага 2](https://apolenkov.github.io/customdev-learning/guides/s2-review.html); порядок доступа к трекеру в компании — в [корпоративных ресурсах](https://apolenkov.github.io/customdev-learning/corporate-resources.html#jira). Добавьте в задачу ссылку на PR; полный SHA ветки укажите, только если он запрошен. Не создавайте случайный ключ или родителя и не пишите, что review получено, пока его нет.
+Учебная задача — issue в своём fork; если курс проходят в компании, это задача в трекере команды. Порядок ведения — на [странице шага 2](https://apolenkov.github.io/ai-pdlc-learning/guides/s2-review.html); порядок доступа к трекеру в компании — в [корпоративных ресурсах](https://apolenkov.github.io/ai-pdlc-learning/corporate-resources.html#jira). Добавьте в задачу ссылку на PR; полный SHA ветки укажите, только если он запрошен. Не создавайте случайный ключ или родителя и не пишите, что review получено, пока его нет.
 
 ## Получите одобрение по текущему diff
 
@@ -73,7 +73,7 @@ Git нужен не ради ещё одной папки: он сохраняе
 
 ## Дальше по курсу
 
-Следующий шаг — обязательный шаг 3 «Изменение в OpenSpec» ([страница шага](https://apolenkov.github.io/customdev-learning/guides/s3-openspec.html)); если практику SDD и OpenSpec из подготовки вы ещё не проходили, начните со [страницы практики](https://apolenkov.github.io/customdev-learning/guides/p3-sdd.html). В том же checkout обновите `AGENTS.md`, инициализируйте OpenSpec командой `openspec init --tools none` и перенесите восемь сценариев в активный Change. Полный `openspec init --tools kilocode` не нужен: он развернёт все 12 рабочих процессов, а для шагов достаточно planning-only набора. Навыки лежат в универсальном `.agents/skills` (`openspec-explore`, `openspec-propose`, `openspec-update-change`), который автоматически читают Kilo и другие агенты; для Kilo в VS Code дополнительно есть команды `.kilo/command` (`opsx-explore`, `opsx-propose`, `opsx-update`). В этом checkout нет приложения; Apply и реализация запрещены. Затем идут шаг 4 «Команда продукта» и шаг 5 «Контекст продукта».
+Следующий шаг — обязательный шаг 3 «Изменение в OpenSpec» ([страница шага](https://apolenkov.github.io/ai-pdlc-learning/guides/s3-openspec.html)); если практику SDD и OpenSpec из подготовки вы ещё не проходили, начните со [страницы практики](https://apolenkov.github.io/ai-pdlc-learning/guides/p3-sdd.html). В том же checkout обновите `AGENTS.md`, инициализируйте OpenSpec командой `openspec init --tools none` и перенесите восемь сценариев в активный Change. Полный `openspec init --tools kilocode` не нужен: он развернёт все 12 рабочих процессов, а для шагов достаточно planning-only набора. Навыки лежат в универсальном `.agents/skills` (`openspec-explore`, `openspec-propose`, `openspec-update-change`), который автоматически читают Kilo и другие агенты; для Kilo в VS Code дополнительно есть команды `.kilo/command` (`opsx-explore`, `opsx-propose`, `opsx-update`). В этом checkout нет приложения; Apply и реализация запрещены. Затем идут шаг 4 «Команда продукта» и шаг 5 «Контекст продукта».
 
 Работать с требованиями на шагах 1–3 можно без модели. Если вы используете ИИ как помощника, оставляйте принятые правки в текущем документе и ветке; отдельные AI-ветки курса не нужны.
 
@@ -86,8 +86,8 @@ Git нужен не ради ещё одной папки: он сохраняе
 Клонирование fork и проверка `origin` (замените `your_login` своим логином; в GitLab вместо этого адреса вставьте адрес проекта, созданного импортом):
 
 ```bash
-git clone https://github.com/your_login/sdd-guide-credit-calculator-stage-2.git
-cd sdd-guide-credit-calculator-stage-2
+git clone https://github.com/your_login/ai-pdlc-learning-stage-2.git
+cd ai-pdlc-learning-stage-2
 git remote get-url origin
 git status --short --branch
 ```
@@ -156,14 +156,14 @@ git switch -c course/your_login/stage-3-reset-years course/your_login/stage-2-re
 
 ## Основные страницы курса
 
-- [Шаг 1. Требования в Git](https://apolenkov.github.io/customdev-learning/guides/s1-git.html)
-- [Шаг 2. Проверяем и согласуем](https://apolenkov.github.io/customdev-learning/guides/s2-review.html)
-- [SDD и OpenSpec — практика из подготовки](https://apolenkov.github.io/customdev-learning/guides/p3-sdd.html)
-- [Шаг 3. Изменение в OpenSpec — обязательный](https://apolenkov.github.io/customdev-learning/guides/s3-openspec.html)
-- [Шаг 4. Команда продукта](https://apolenkov.github.io/customdev-learning/guides/s4-team.html)
-- [Шаг 5. Контекст продукта — изолированный продуктовый Store](https://apolenkov.github.io/customdev-learning/guides/s4-product.html)
+- [Шаг 1. Требования в Git](https://apolenkov.github.io/ai-pdlc-learning/guides/s1-git.html)
+- [Шаг 2. Проверяем и согласуем](https://apolenkov.github.io/ai-pdlc-learning/guides/s2-review.html)
+- [SDD и OpenSpec — практика из подготовки](https://apolenkov.github.io/ai-pdlc-learning/guides/p3-sdd.html)
+- [Шаг 3. Изменение в OpenSpec — обязательный](https://apolenkov.github.io/ai-pdlc-learning/guides/s3-openspec.html)
+- [Шаг 4. Команда продукта](https://apolenkov.github.io/ai-pdlc-learning/guides/s4-team.html)
+- [Шаг 5. Контекст продукта — изолированный продуктовый Store](https://apolenkov.github.io/ai-pdlc-learning/guides/s4-product.html)
 
-Каталог курса: <https://apolenkov.github.io/customdev-learning/guides/>.
+Каталог курса: <https://apolenkov.github.io/ai-pdlc-learning/guides/>.
 
 ## Отдельная передача шага 2 в реализацию
 
@@ -179,7 +179,7 @@ git show "${source_sha}:specification.md"
 git show "${source_sha}:transfer.md"
 ```
 
-Дерево должно быть чистым, оба `show` — выводить принятый договор и provenance позднего старта. В корне отдельного checkout сервиса откройте [общий практикум разработчика](https://github.com/apolenkov/sdd-guide-credit-calculator-stage-3/blob/main/docs/developer-handoff.md) и выполните только начальную read-only проверку:
+Дерево должно быть чистым, оба `show` — выводить принятый договор и provenance позднего старта. В корне отдельного checkout сервиса откройте [общий практикум разработчика](https://github.com/apolenkov/ai-pdlc-learning-stage-3/blob/main/docs/developer-handoff.md) и выполните только начальную read-only проверку:
 
 ```bash
 git status --short --branch

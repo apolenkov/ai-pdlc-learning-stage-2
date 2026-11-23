@@ -4,7 +4,7 @@
 
 Заголовок: `Уточнить сброс формы кредитного калькулятора`.
 
-Добавьте ссылку на вашу личную учебную задачу: issue в своём fork или, если курс проходят в компании, задачу в трекере команды. Порядок — на [странице шага 2](https://apolenkov.github.io/customdev-learning/guides/s2-review.html), доступ в компании — в [корпоративных ресурсах](https://apolenkov.github.io/customdev-learning/corporate-resources.html#jira). Не подставляйте случайный ключ.
+Добавьте ссылку на вашу личную учебную задачу: issue в своём fork или, если курс проходят в компании, задачу в трекере команды. Порядок — на [странице шага 2](https://apolenkov.github.io/ai-pdlc-learning/guides/s2-review.html), доступ в компании — в [корпоративных ресурсах](https://apolenkov.github.io/ai-pdlc-learning/corporate-resources.html#jira). Не подставляйте случайный ключ.
 
 ## Что изменено
 
